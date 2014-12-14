@@ -6,7 +6,10 @@
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alligator-io/icebreaker-peer-net.git"
+  },
   "keywords": [
     "icebreaker",
     "server",
@@ -19,6 +22,8 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
+    "icebreaker": "^0.4.0",
+    "icebreaker-peer": "^0.1.0",
     "tape": "^3.0.3"
   }
 }
