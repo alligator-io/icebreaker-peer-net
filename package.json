@@ -1,0 +1,24 @@
+{
+  "name": "icebreaker-peer-net",
+  "version": "0.1.0",
+  "description": "icebreaker-peer-net",
+  "main": "index.js",
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do node $t; done"
+  },
+  "repository": "",
+  "keywords": [
+    "icebreaker",
+    "server",
+    "peer",
+    "p2p",
+    "tcp",
+    "net"
+  ],
+  "author": "Markus Wunderlin",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "tape": "^3.0.3"
+  }
+}
