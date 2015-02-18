@@ -1,7 +1,7 @@
 var net = require('net')
 var fs = require('fs')
 var _ = require('icebreaker')
-require('icebreaker-peer')
+if(!_.peer)require('icebreaker-peer')
 
 var connection = function(original) {
   original.setKeepAlive(true)
@@ -78,20 +78,26 @@ _.mixin({
 
     connect : function(params) {
       if (!params.address) params.address = this.address
-      process.nextTick(function() {
-        connection.call(this,
-          net.createConnection(typeof params.port === 'string' ? params.port : {
-            port : params.port,
-            host : params.address
-          })
-        )
-      }.bind(this))
+      var c = net.createConnection( typeof params.port === 'string' ?
+        params.port : {
+          port : params.port,
+          host : params.address
+      },
+      function() { connection.call(this, c) }.bind(this)
+     )
     },
 
-    stop : function() {
+    stop : function stop() {
       try {
-        this.server.close(function() {
-          this.emit('stopped')
+        this.server.close(function close() {
+         if(Object.keys(this.connections).length>0){
+          process.nextTick(function(){
+            close.call(this)
+          }.bind(this))
+          return
+          }
+        else
+         this.emit('stopped')
         }.bind(this))
       }
       catch (e) {
