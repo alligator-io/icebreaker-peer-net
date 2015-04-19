@@ -92,10 +92,11 @@ _.mixin({
       if (!params.address) params.address = self.address
 
       function onError(err) {
-        _([err.message, params, err.stack], _.log(null, 'error'))
         if(isFunction(params.onError)){
           params.onError(err)
+          delete params.onError
         }
+        _([err.message, params, err.stack], _.log(null, 'error'))
       }
 
       var c = net.createConnection(isString(params.port) ?
