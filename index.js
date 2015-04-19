@@ -8,6 +8,10 @@ function isString(obj){
   return typeof obj === 'string'
 }
 
+function isFunction(obj){
+  return typeof obj === 'function'
+}
+
 function isSame(err,code){
   return err.code === code
 }
@@ -87,9 +91,11 @@ _.mixin({
 
       if (!params.address) params.address = self.address
 
-      var onError = function (err) {
+      function onError(err) {
         _([err.message, params, err.stack], _.log(null, 'error'))
-        self.emit('error',err,params)
+        if(isFunction(params.onError)){
+          params.onError(err)
+        }
       }
 
       var c = net.createConnection(isString(params.port) ?
@@ -99,9 +105,11 @@ _.mixin({
         },
         function () {
           c.removeListener('error', onError)
+          delete params.onError
           connection.call(self, c)
         }
       )
+
       c.once('error', onError)
     },
 
