@@ -91,27 +91,14 @@ _.mixin({
 
       if (!params.address) params.address = self.address
 
-      function onError(err) {
-        if(isFunction(params.onError)){
-          params.onError(err)
-          delete params.onError
-        }
-        _([err.message, params, err.stack], _.log(null, 'error'))
-      }
-
       var c = net.createConnection(isString(params.port) ?
         params.port : {
           port: params.port,
           host: params.address
-        },
-        function () {
-          c.removeListener('error', onError)
-          delete params.onError
-          connection.call(self, c)
         }
       )
 
-      c.once('error', onError)
+      connection.call(self, c)
     },
 
     stop: function stop() {
