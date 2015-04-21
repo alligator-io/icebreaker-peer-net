@@ -8,12 +8,12 @@ function isString(obj){
   return typeof obj === 'string'
 }
 
-function isFunction(obj){
-  return typeof obj === 'function'
-}
-
 function isSame(err,code){
   return err.code === code
+}
+
+function isPath(p) {
+  return isString(p) && isNaN(p)
 }
 
 function  connection(original) {
@@ -38,7 +38,7 @@ _.mixin({
       var server = this.server = net.createServer(connection.bind(this))
       var self = this
       this.server.on('error', function (err) {
-        if (isString(self.port) && isSame(err,'EADDRINUSE')) {
+        if (isPath(self.port) && isSame(err,'EADDRINUSE')) {
           var socket = net.Socket()
 
           socket.on('error', function (err) {
@@ -71,19 +71,17 @@ _.mixin({
         )
       })
 
-      var onListening = function () {
-        if (isString(self.port)) fs.chmod(self.port, 0777)
-        self.emit('started')
-      }
-
       var listen = function (onListening) {
         self.server.listen(
-          self.port, isString(self.port) ? null :
+          self.port, isPath(self.port) ? null :
           self.address, onListening
         )
       }
 
-      listen(onListening)
+      listen(function () {
+        if (isPath(self.port)) fs.chmod(self.port, 0777)
+        self.emit('started')
+      })
     },
 
     connect: function (params) {
@@ -91,7 +89,7 @@ _.mixin({
 
       if (!params.address) params.address = self.address
 
-      var c = net.createConnection(isString(params.port) ?
+      var c = net.createConnection(isPath(params.port) ?
         params.port : {
           port: params.port,
           host: params.address
