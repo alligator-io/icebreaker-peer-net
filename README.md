@@ -1,6 +1,14 @@
 # icebreaker-peer-net
 [![Travis](https://img.shields.io/travis/alligator-io/icebreaker-peer-net.svg)](https://travis-ci.org/alligator-io/icebreaker-peer-net)
 [![NPM](https://img.shields.io/npm/dm/icebreaker-peer-net.svg)](https://www.npmjs.com/package/icebreaker-peer-net)
+## Prerequisites
+```bash
+npm install --save icebreaker
+```
+## Install
+```bash
+npm install --save icebreaker-peer-net
+```
 ## Example
 ```javascript
 var _ = require('icebreaker')
@@ -8,17 +16,17 @@ require('icebreaker-peer-net')
 require('icebreaker-msgpack')
 
 var muxrpc = require('muxrpc')
-var os =require('os')
+var os = require('os')
 
-var manifest={
+var manifest = {
   os:{
     hostname:'sync',
     platform:'sync',
     arch:'sync'
   },
   peer:{
-   name:'sync',
-   port:'sync'
+    name:'sync',
+    port:'sync'
   }
 }
 
@@ -33,7 +41,7 @@ peer2.on('connection',onConnection)
 peer2.on('started',connectPeers)
 peer2.start()
 
-var count =0
+var count = 0
 function connectPeers(){
   if(++count===2){
     peer1.connect(peer2)
