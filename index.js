@@ -109,8 +109,8 @@ _.mixin({
         emit(_.pair(o))
       }
 
-      o.once('error',handle)
-      o.once('connect',handle)
+      o.on('error',handle)
+      o.on('connect',handle)
     },
 
     stop: function stop() {
