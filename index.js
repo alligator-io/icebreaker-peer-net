@@ -1,6 +1,6 @@
+var _ = require('icebreaker')
 var net = require('net')
 var fs = require('fs')
-var _ = require('icebreaker')
 
 if (!_.peer) require('icebreaker-peer')
 
@@ -8,22 +8,8 @@ function isString(obj){
   return typeof obj === 'string'
 }
 
-function isSame(err,code){
-  return err.code === code
-}
-
 function isPath(p) {
   return isString(p) && isNaN(p)
-}
-
-function  connection(original) {
-  if (original.setKeepAlive) original.setKeepAlive(true)
-  if (original.setNoDelay) original.setNoDelay(true)
-
-  var connection = _.pair(original)
-  if (original.remoteAddress) connection.address = original.remoteAddress
-  if (original.remotePort) connection.port = original.remotePort
-  this.connection(connection)
 }
 
 if (!_.peers) _.mixin({
@@ -35,14 +21,22 @@ _.mixin({
     name: 'net',
     auto: true,
     start: function () {
-      var server = this.server = net.createServer(connection.bind(this))
+      var self=this
+      this.server = net.createServer(function(o){
+        o.setKeepAlive(true)
+        o.setNoDelay(true)
+        var c = _.pair(o)
+        c.address = o.remoteAddress
+        c.port = o.remotePort
+        self.connection(c)
+      })
       var self = this
       this.server.on('error', function (err) {
-        if (isPath(self.port) && isSame(err,'EADDRINUSE')) {
+        if (isPath(self.port) && err.code === 'EADDRINUSE') {
           var socket = net.Socket()
 
           socket.on('error', function (err) {
-            if (isSame(err,'ECONNREFUSED')) {
+            if (err.code === 'ECONNREFUSED') {
               fs.unlink(self.port, function (err) {
                 if (err)
                   _(
@@ -51,6 +45,9 @@ _.mixin({
                   )
                 listen()
               })
+            }
+            else if (err.code==='ENOENT') {
+              listen()
             }
           })
 
@@ -87,16 +84,33 @@ _.mixin({
     connect: function (params) {
       var self = this
 
-      if (!params.address) params.address = self.address
-
-      var c = net.createConnection(isPath(params.port) ?
+      var o = net.createConnection(isPath(params.port) ?
         params.port : {
           port: params.port,
           host: params.address
         }
       )
 
-      connection.call(self, c)
+      o.setKeepAlive(true)
+      o.setNoDelay(true)
+
+      function emit(c){
+        c.direction = params.direction
+        c.address = o.remoteAddress||params.address
+        if(isPath(c.port))c.address = c.address||self.address
+        c.port = o.remotePort||params.port
+        self.connection(c)
+      }
+
+      function handle(err){
+        o.removeListener('error',handle)
+        o.removeListener('connect',handle)
+        if(err)return emit({ source:_.error(err), sink:_.drain()})
+        emit(_.pair(o))
+      }
+
+      o.once('error',handle)
+      o.once('connect',handle)
     },
 
     stop: function stop() {
