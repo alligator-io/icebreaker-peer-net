@@ -1,6 +1,6 @@
 {
   "name": "icebreaker-peer-net",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "icebreaker-peer-net",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "icebreaker-peer": "^0.2.0"
+    "icebreaker-peer": "^0.2.1"
   },
   "devDependencies": {
     "icebreaker": "^0.6.1", 
