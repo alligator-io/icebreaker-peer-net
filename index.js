@@ -30,7 +30,7 @@ _.mixin({
         c.port = o.remotePort
         self.connection(c)
       })
-      var self = this
+
       this.server.on('error', function (err) {
         if (isPath(self.port) && err.code === 'EADDRINUSE') {
           var socket = net.Socket()
