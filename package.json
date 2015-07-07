@@ -23,10 +23,10 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "icebreaker-peer": "^0.2.2"
+    "icebreaker-peer": "^0.2.3"
   },
   "devDependencies": {
-    "icebreaker": "^0.6.1", 
-    "tape": "^3.0.3"
+    "icebreaker": "^0.7.0",
+    "tape": "^4.0.0"
   }
 }
