@@ -1,6 +1,6 @@
 {
   "name": "icebreaker-peer-net",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "icebreaker-peer-net",
   "main": "index.js",
   "scripts": {
