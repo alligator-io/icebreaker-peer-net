@@ -122,7 +122,7 @@ _.mixin({
       catch (e) {
         _([e], _.log(function () {
           self.emit('stopped')
-        }), 'error')
+        }, 'error'))
       }
     }
   })
