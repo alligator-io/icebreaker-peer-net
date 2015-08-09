@@ -1,9 +1,9 @@
 var test = require('tape')
 var _ = require('icebreaker')
-require('../index.js')
+var Net = require('../index.js')
 
 test('_.peers.net should emit an error',function(t){
-  _.peers.net({port:'./test2.socket'})
+var peer2 = Net({port:8982})
   .on('connection',function(connection){
     var self = this
     console.log('connection ',connection.address,':',connection.port)
@@ -13,10 +13,10 @@ test('_.peers.net should emit an error',function(t){
     }))
   })
   .on('started',function(){
-    this.connect({address:'localhost',port:'9384'})
+    this.connect({address:'localhost',port:'9384',peer:this.peer})
   })
   .on('stopped',function(){
-    t.equal(this.port,'./test2.socket')
+    t.equal(this.port,8982)
     t.equal(this.name,'net')
     t.equal(Object.keys(this.connections).length,0)
     t.end()
