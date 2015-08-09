@@ -4,7 +4,7 @@
   "description": "icebreaker-peer-net",
   "main": "index.js",
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,10 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "icebreaker-peer": "^0.3.0"
+    "icebreaker": "^0.7.0",
+    "icebreaker-peer": "git+https://github.com/alligator-io/icebreaker-peer.git"
   },
   "devDependencies": {
-    "icebreaker": "^0.7.0",
-    "tape": "^4.0.0"
+    "tape": "^4.0.1"
   }
 }
