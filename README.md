@@ -13,7 +13,6 @@ npm install --save icebreaker-peer-net
 ```javascript
 var _ = require('icebreaker')
 var Net = require('icebreaker-peer-net')
-require('icebreaker-msgpack')
 
 var muxrpc = require('muxrpc')
 var os = require('os')
@@ -30,7 +29,7 @@ var manifest = {
   }
 }
 
-var peer1 = Net{port:5059})
+var peer1 = Net({port:5059})
 peer1.on('connection',onConnection)
 peer1.on('started',connectPeers)
 peer1.start()
@@ -81,7 +80,7 @@ function onConnection(connection){
     console.log('arch:',arch)
   })
 
-  _(connection,_.msgpack.decode(),rpc.createStream(),_.msgpack.encode(),connection)
+  _(connection,rpc.createStream(),connection)
 }
 ```
 ## License
