@@ -12,7 +12,7 @@ npm install --save icebreaker-peer-net
 ## Example
 ```javascript
 var _ = require('icebreaker')
-require('icebreaker-peer-net')
+var Net = require('icebreaker-peer-net')
 require('icebreaker-msgpack')
 
 var muxrpc = require('muxrpc')
@@ -30,13 +30,13 @@ var manifest = {
   }
 }
 
-var peer1 = _.peers.net({port:5059})
+var peer1 = Net{port:5059})
 peer1.on('connection',onConnection)
 peer1.on('started',connectPeers)
 peer1.start()
 
 
-var peer2 = _.peers.net({port:5060})
+var peer2 = Net({port:5060})
 peer2.on('connection',onConnection)
 peer2.on('started',connectPeers)
 peer2.start()
