@@ -1,6 +1,6 @@
 {
   "name": "icebreaker-peer-net",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "description": "icebreaker-peer-net",
   "main": "index.js",
   "scripts": {
@@ -23,10 +23,10 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "icebreaker": "^0.7.0",
-    "icebreaker-peer": "git+https://github.com/alligator-io/icebreaker-peer.git"
+    "icebreaker": "^1.0.1",
+    "icebreaker-peer": "^1.0.1"
   },
   "devDependencies": {
-    "tape": "^4.0.1"
+    "tape": "^4.2.2"
   }
 }
