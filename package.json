@@ -24,7 +24,8 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "icebreaker": "^1.0.1",
-    "icebreaker-peer": "^1.0.1"
+    "icebreaker-peer": "^1.0.1",
+    "stream-to-pull-stream": "^1.6.6"
   },
   "devDependencies": {
     "tape": "^4.2.2"

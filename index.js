@@ -2,6 +2,7 @@ var _ = require('icebreaker')
 var net = require('net')
 var fs = require('fs')
 var Peer = require('icebreaker-peer')
+var to = require('stream-to-pull-stream')
 
 function isString(obj) {
   return typeof obj === 'string'
@@ -32,7 +33,7 @@ function PeerNet(params) {
       server = net.createServer(function(o) {
         o.setKeepAlive(true)
         o.setNoDelay(true)
-        var c = _.pair(o)
+        var c = to.duplex(o)
         c.address = o.remoteAddress
         c.port = o.remotePort
         self.connection(c)
@@ -107,7 +108,7 @@ function PeerNet(params) {
             source : _.error(err),
             sink : _.drain()
           })
-        emit(_.pair(o))
+        emit(to.duplex(o))
       }
 
       o.on('error', handle)
