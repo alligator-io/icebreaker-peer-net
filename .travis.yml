@@ -1,7 +1,27 @@
-language: node_js
-node_js:
-  - "4.1"
-  - "4.0"
-  - "0.12"
-  - "0.11"
-  - "0.10"
+sudo: false
+language: cpp
+os:
+  - linux
+  - osx
+env:
+  matrix:
+    - TRAVIS_NODE_VERSION="0.12"
+    - TRAVIS_NODE_VERSION="4"
+    - TRAVIS_NODE_VERSION="5"
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+
+before_install:
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - npm install -g node-gyp
+  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then export CXX=g++-4.8; fi
+  - $CXX --version
+install:
+  - npm install
+script:
+  - npm test
